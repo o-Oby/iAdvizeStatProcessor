@@ -80,4 +80,4 @@ Pour toute question ou assistance, n'hésitez pas à me contacter.
 
 ## Licence
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+Ce projet est sous licence Apache. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
