@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iAdvizeStatProcessor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        p {
+            max-width: 600px;
+            text-align: justify;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 800px;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .instructions {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            textarea {
+                font-size: 14px;
+                height: 150px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>iAdvizeStatProcessor</h1>
+    <div class="instructions">
+        <p>
+            <strong>Description :</strong> iAdvizeStatProcessor est un outil puissant et convivial conçu pour extraire et convertir les données statistiques des conversations sur iAdvize en un fichier Excel structuré. Grâce à cet outil, vous pouvez facilement analyser les performances de vos interactions clients avec des indicateurs clés tels que :
+        </p>
+        <ul>
+            <li>Le nombre total de conversations cumulées chaque mois</li>
+            <li>La durée moyenne de traitement des conversations</li>
+        </ul>
+        <p>
+            <strong>Nombre d'heures totales :</strong> La formule utilisée par iAdvizeStatProcessor convertit d'abord la durée moyenne de traitement en minutes décimales. Ensuite, elle multiplie cette valeur par le nombre total de conversations pour obtenir le temps total en minutes, qui est ensuite converti en heures.
+        </p>
+        <p>
+            <strong>Comment utiliser iAdvizeStatProcessor :</strong><br><br>
+            1. <strong>Copier et coller :</strong> Copiez les statistiques des conversations (Nombre de conversations, Mois, Durée moyenne de traitement) depuis iAdvize et collez-les dans la zone de texte ci-dessous.<br><br>
+            2. <strong>Répétition de l'opération :</strong> Répétez l'opération de sélection, copie et collage pour toutes les pages afin d'avoir toutes les données dans la zone de texte.<br><br>
+            3. <strong>Générer le fichier Excel :</strong> Une fois les données collées, cliquez sur le bouton "Convertir en Excel". Un fichier Excel structuré et formaté sera alors généré pour vous. Il indiquera le mois et l'année de la période concernée, le nombre de conversations effectuées dans le mois, la durée moyenne de traitement par conversation et calculera ensuite le nombre d'heures totales effectives par mois puis par année.
+        </p>
+    </div>
+    <textarea id="inputTextIAdvize" rows="20" cols="100" placeholder="Collez ici les données statistiques de iAdvize..."></textarea><br>
+    <button onclick="convertToExcel('/process-iadvize', 'inputTextIAdvize')">Convertir en Excel</button>
+
+    <script>
+        function convertToExcel(url, textareaId) {
+            const inputText = document.getElementById(textareaId).value;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ inputText })
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'output.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
